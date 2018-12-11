@@ -10,23 +10,23 @@ import struct
 
 
 if (len(sys.argv) < 2):
-  print("Usage: python3 " + sys.argv[0] + " server_port")
+  print("Usage: python3 " + sys.argv[0] + " receiver_port")
   sys.exit(1)
 
-#server port
-server_port=int(sys.argv[1])
+#receiver port
+receiver_port=int(sys.argv[1])
 
 #create a socket
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+receiver = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-#bind a socket to server
-server.bind(("127.0.0.1", server_port))
+#bind a socket to receiver
+receiver.bind(("127.0.0.1", receiver_port))
 
 #listen for connection
-server.listen(10)
+receiver.listen(10)
 
 #establish a connection
-(connection, address) = server.accept()
+(connection, address) = receiver.accept()
 
 #emptty byte data used to load frames in
 data = b''
@@ -57,4 +57,4 @@ while True:
     break
 
 cv2.destroyAllWindows()
-server.close()
+receiver.close()

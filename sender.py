@@ -10,10 +10,10 @@ import struct
 
 
 if (len(sys.argv) < 2):
-  print("Usage: python "  + sys.argv[0] + " server_port")
+  print("Usage: python3 sender.py [PORT_NUMBER]")
   sys.exit(1)
 
-server_port=int(sys.argv[1])
+sender_port=int(sys.argv[1])
 
 # 'IMG_4304.mov'
 
@@ -24,7 +24,7 @@ video = cv2.VideoCapture(sys.argv[2])
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 #connect socket to port
-sock.connect(('127.0.0.1', server_port))
+sock.connect(('127.0.0.1', sender_port))
 
 
 while True:
