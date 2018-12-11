@@ -1,9 +1,11 @@
 # TODO: import socket library
-from socket import *
+import socket
 import sys
 import random
 import string
 import cv2 
+import pickle
+import struct
 
 
 if (len(sys.argv) < 2):
@@ -12,26 +14,39 @@ if (len(sys.argv) < 2):
 
 server_port=int(sys.argv[1])
 
-# TODO: Create a socket for the server on localhost
-server = socket(AF_INET, SOCK_STREAM)
-# TODO: Bind it to a specific server port supplied on the command line
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
 server.bind(("127.0.0.1", server_port))
-# TODO: Put server's socket in LISTEN mode
-server.listen(5)
-# TODO: Call accept to wait for a connection
+
+server.listen(10)
+
 (connection, address) = server.accept()
-# Repeat NUM_TRANSMISSIONS times
-# TODO: receive data over the socket returned by the accept() method
-data = connection.recv(4096).decode()
-# TODO: print out the received data for debugging
-print("Received: " + data)
-# TODO: Generate a new string of length 10 using rand_str
-randomString = rand_str(10)
-# TODO: Append the string to the buffer received
-newData = randomString + data
-print("Appended: " + newData)
-# TODO: Send the new string back to the client
-connection.send(newData.encode("utf-8"))
-# TODO: Close all sockets that were created
-server.close()
-connection.close()
+
+data_size = struct.calcsize("L")
+
+while True:
+  while len(data) < data_size:
+    data += connection.recv(4096).decode()
+  packed_msg_size = data[:data_size]
+  data = data[data_size:]
+  msg_size = struct.unpack("L", packed_msg_size)[0]
+  while len(data) < msg_size:
+      data += conn.recv(4096)
+  frame_data = data[:msg_size]
+  data = data[msg_size:]
+  
+
+  frame=pickle.loads(frame_data)
+  print(frame)
+  cv2.imshow('frame',frame)  
+
+  # print(sys.getsizeof(data))
+
+  # frame = pickle.loads(data)
+
+  # cv2.imshow('frame', frame)
+
+
+# server.close()
+
+# connection.close()
