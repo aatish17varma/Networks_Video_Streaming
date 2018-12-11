@@ -29,13 +29,15 @@ sock.connect(('127.0.0.1', server_port))
 
 while True:
   ret, frame = video.read()
+  if ret:
+      data = pickle.dumps(frame)
 
-  data = pickle.dumps(frame)
+      sock.sendall(struct.pack("L", len(data))+data) 
 
-  sock.sendall(struct.pack("L", len(data))+data) 
+      if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+  else:
+      break
 
-  if cv2.waitKey(1) & 0xFF == ord('q'):
-    break
-
-
+video.release()
 sock.close()

@@ -1,4 +1,6 @@
 import socket
+from socket import error as SocketError
+import errno
 import sys
 import random
 import string
@@ -45,10 +47,14 @@ while True:
   
   frame_data = data[:msg_size]
   data = data[msg_size:]
+  if not data:
+      print("DONE")
+      break
   
   cv2.imshow('frame', pickle.loads(frame_data))
 
   if cv2.waitKey(1) & 0xFF == ord('q'):
     break
 
+cv2.destroyAllWindows()
 server.close()
