@@ -42,7 +42,7 @@ while(video.isOpened()):
 
   listOfFrames.append(frame)
 
-  if cv2.waitKey(500) & 0xFF == ord('q'):
+  if cv2.waitKey(1) & 0xFF == ord('q'):
     break
 
 video.release()
