@@ -4,6 +4,7 @@ import sys
 import random
 import string
 import cv2 
+import pickle
 
 
 if (len(sys.argv) < 2):
