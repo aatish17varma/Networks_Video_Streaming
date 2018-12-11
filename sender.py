@@ -15,16 +15,14 @@ if (len(sys.argv) < 2):
 
 sender_port=int(sys.argv[1])
 
-# 'IMG_4304.mov'
-
-#name of the video you want to display
-video = cv2.VideoCapture(sys.argv[2])
-
 #create socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 #connect socket to port
 sock.connect(('127.0.0.1', sender_port))
+
+#name of the video you want to display
+video = cv2.VideoCapture(sys.argv[2])
 
 
 while True:
