@@ -1,7 +1,6 @@
 import sys
 import os
 import random
-import string
 import cv2
 import socket
 import numpy as np 

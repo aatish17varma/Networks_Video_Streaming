@@ -1,9 +1,6 @@
 import socket
-from socket import error as SocketError
-import errno
 import sys
 import random
-import string
 import cv2 
 import pickle
 import struct
@@ -48,7 +45,6 @@ while True:
   frame_data = data[:msg_size]
   data = data[msg_size:]
   if not data:
-      print("DONE")
       break
   
   cv2.imshow('frame', pickle.loads(frame_data))
