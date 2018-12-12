@@ -1,40 +1,34 @@
 import sys
-import os
-import random
 import cv2
-import socket
-import numpy as np 
+from socket import *
 import pickle
 import struct
 
 
-if (len(sys.argv) < 2):
-  print("Usage: python3 sender.py [PORT_NUMBER]")
-  sys.exit(1)
+if (len(sys.argv) < 3):
+    print("Usage: python3 " + sys.argv[0] + " port_number video_file")
+    sys.exit(1)
 
-sender_port=int(sys.argv[1])
+port = int(sys.argv[1])
+video_file = sys.argv[2]
 
-#create socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# Socket boilerplate
+sender = socket(AF_INET, SOCK_STREAM)
+sender.connect(('127.0.0.1', port))
 
-#connect socket to port
-sock.connect(('127.0.0.1', sender_port))
-
-#name of the video you want to display
-video = cv2.VideoCapture(sys.argv[2])
-
+# Initialize VideoCapture object for parsing input video frame by frame
+video_capture = cv2.VideoCapture(video_file)
 
 while True:
-  ret, frame = video.read()
-  if ret:
-      data = pickle.dumps(frame)
+    (isFrame, frame) = video_capture.read()
 
-      sock.sendall(struct.pack("L", len(data))+data) 
+    if isFrame:
+        byte_stream = pickle.dumps(frame)
+        header = struct.pack("L", len(byte_stream))
 
-      if cv2.waitKey(1) & 0xFF == ord('q'):
+        sender.sendall(header + byte_stream) 
+    else:
         break
-  else:
-      break
 
-video.release()
-sock.close()
+video_capture.release()
+sender.close()
