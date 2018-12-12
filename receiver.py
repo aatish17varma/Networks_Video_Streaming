@@ -53,6 +53,6 @@ port_socket.close()
 # Play video
 for frame in frames:
     cv2.imshow('Received video', frame)
-    cv2.waitKey(33)
+    cv2.waitKey(33) # equivalent to 30 frames per second
 
 cv2.destroyAllWindows()
