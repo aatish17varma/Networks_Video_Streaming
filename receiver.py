@@ -52,7 +52,7 @@ port_socket.close()
 
 # Play video
 for frame in frames:
-    cv2.imshow('frame', frame)
+    cv2.imshow('Received video', frame)
     cv2.waitKey(33)
 
 cv2.destroyAllWindows()
