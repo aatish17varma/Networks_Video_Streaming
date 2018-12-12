@@ -23,9 +23,11 @@ while True:
     (isFrame, frame) = video_capture.read()
 
     if isFrame:
+        # Convert frame to byte stream and create header with length of stream
         byte_stream = pickle.dumps(frame)
         header = struct.pack("L", len(byte_stream))
 
+        # Send the frame byte stream
         sender.sendall(header + byte_stream) 
     else:
         break
