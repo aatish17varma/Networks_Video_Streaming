@@ -22,6 +22,8 @@ bytes_buffer = b''
 # For the purposes of retrieving the header
 header_length = struct.calcsize("L")
 
+frames = []
+
 while True:
     while len(bytes_buffer) < header_length:
         bytes_buffer += receiver.recv(4096)
@@ -37,11 +39,15 @@ while True:
     frame_data = bytes_buffer[:frame_size]
     bytes_buffer = bytes_buffer[frame_size:]
 
+    frames += [pickle.loads(frame_data)]
+
     if not bytes_buffer:
         break
 
-    cv2.imshow('frame', pickle.loads(frame_data))
-    cv2.waitKey(1)
+port_socket.close()
+
+for frame in frames:
+    cv2.imshow('frame', frame)
+    cv2.waitKey(33)
 
 cv2.destroyAllWindows()
-port_socket.close()
